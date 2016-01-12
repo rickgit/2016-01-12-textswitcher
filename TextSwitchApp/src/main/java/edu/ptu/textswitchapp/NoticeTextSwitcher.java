@@ -50,12 +50,11 @@ public class NoticeTextSwitcher extends TextSwitcher {
 
     private void changeToNextText() {
         if (noticesArr.length > 0) {
-            if (noticePosition >= 0 && noticePosition < noticesArr.length ) {
-                setText(noticesArr[noticePosition]);
-                noticePosition++;//show next
+            if (noticePosition >=0 && noticePosition < noticesArr.length-1 ) {
+                setText(noticesArr[++noticePosition]);//show next
             } else {
                 setText(noticesArr[0]);
-                noticePosition = 1;//show next
+                noticePosition = 0;//show next
             }
         }
 
