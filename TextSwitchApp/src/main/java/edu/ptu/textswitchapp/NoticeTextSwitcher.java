@@ -3,7 +3,11 @@ package edu.ptu.textswitchapp;
 import android.content.Context;
 import android.os.Message;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
@@ -25,8 +29,27 @@ public class NoticeTextSwitcher extends TextSwitcher {
 
     private void initView() {
         setFactory(createFactory());
-        setOutAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.notice_scroll_top_to_down_current_text));
-        setInAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.notice_scroll_top_to_down_next_text));
+//        setOutAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.notice_scroll_top_to_down_current_text));
+//        setInAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.notice_scroll_top_to_down_next_text));
+        AnimationSet topToDownCurrentText = new AnimationSet(true);
+        topToDownCurrentText.setDuration(200);
+        topToDownCurrentText.addAnimation(
+                new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 1f));
+        topToDownCurrentText.addAnimation(new AlphaAnimation(1, 0));
+        AnimationSet topToDownNextTextAnim = new AnimationSet(true);
+        topToDownNextTextAnim.setDuration(200);
+        topToDownNextTextAnim.addAnimation(
+                new TranslateAnimation(Animation.RELATIVE_TO_SELF,0f,
+                        Animation.RELATIVE_TO_SELF, 0f,
+                        Animation.RELATIVE_TO_SELF, -1f,
+                        Animation.RELATIVE_TO_SELF, 0f));
+        topToDownNextTextAnim.addAnimation(new AlphaAnimation(0, 1));
+
+        setOutAnimation(topToDownCurrentText);
+        setInAnimation(topToDownNextTextAnim);
         switcher = new Switcher(this);
     }
 
@@ -39,7 +62,7 @@ public class NoticeTextSwitcher extends TextSwitcher {
                 textView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (itemClickListener!=null)
+                        if (itemClickListener != null)
                             itemClickListener.onItemClick(noticePosition);
                     }
                 });
@@ -50,7 +73,7 @@ public class NoticeTextSwitcher extends TextSwitcher {
 
     private void changeToNextText() {
         if (noticesArr.length > 0) {
-            if (noticePosition >=0 && noticePosition < noticesArr.length-1 ) {
+            if (noticePosition >= 0 && noticePosition < noticesArr.length - 1) {
                 setText(noticesArr[++noticePosition]);//show next
             } else {
                 setText(noticesArr[0]);
@@ -72,14 +95,15 @@ public class NoticeTextSwitcher extends TextSwitcher {
 //        });
 //    }
 
-    public void setNoticesArr(String[] arr){
-        if (arr!=null&&arr.length>0){
-            this.noticesArr=arr;
+    public void setNoticesArr(String[] arr) {
+        if (arr != null && arr.length > 0) {
+            this.noticesArr = arr;
             setText(arr[0]);
             //FIXME 默认开启动画
             startAnimation();
         }
     }
+
     public void startAnimation() {
         switcher.startAnimation();
     }
@@ -88,12 +112,14 @@ public class NoticeTextSwitcher extends TextSwitcher {
         switcher.stopAnimation();
     }
 
-    public void setOnItemClickListener(ItemClickListener itemClickListener){
-        this.itemClickListener=itemClickListener;
+    public void setOnItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
+
     public static interface ItemClickListener {
         public void onItemClick(int position);
     }
+
     private static class Switcher {
         private final NoticeTextSwitcher noticeTextSwitcher;
         private boolean isRuning = true;

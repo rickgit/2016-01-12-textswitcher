@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(int position) {
                 Toast.makeText(MainActivity.this, "点击了"+position, Toast.LENGTH_SHORT).show();
             }
-        }); 
+        });
         rlContent.addView(child);
         child.setNoticesArr(new String[]{"99999", "000", "123214"});
     }
