@@ -66,7 +66,7 @@ public class NoticeTextSwitcher extends TextSwitcher {
                             itemClickListener.onItemClick(noticePosition);
                     }
                 });
-				FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 lp.gravity = Gravity.CENTER_VERTICAL;
                 textView.setLayoutParams(lp);
                 return textView;
